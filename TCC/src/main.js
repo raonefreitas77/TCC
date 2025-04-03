@@ -27,28 +27,48 @@ controls.screenSpacePanning = false;
 controls.maxDistance = 10; // Limita o zoom
 controls.minDistance = 2;
 
+async function carregarModelo(animal, camada){
+  try{
+      const response = await fetch("http://localhost:3000/api/modelos")
+      const data = await response.json()
 
-const gltfLoader = new GLTFLoader();
-gltfLoader.load(
-  "/base(1).glb", 
-  (gltf) => {
-    const model = gltf.scene;
-    model.scale.set(2, 2, 2);
-    model.position.set(0, 0, 0);
+      console.log("Dados recebidos da API:", data);
 
-    model.traverse((child) => {
-      if (child.isMesh) {
-        child.geometry.center(); 
-        child.material = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+      const modeloCaminho = data[animal]?.camadas[camada]
+
+      console.log("Caminho do modelo:", modeloCaminho)
+      
+      if(!modeloCaminho){
+        console.error("Caminho do modelo não encontrado")
+        return
       }
-    });
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load(
+        modeloCaminho, 
+        (gltf) => {
+          const model = gltf.scene;
+          model.scale.set(2, 2, 2);
+          model.position.set(0, 0, 0);
 
-    scene.add(model);
-  },
-  undefined,
-  (error) => console.error("Erro ao carregar modelo:", error)
-);
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.geometry.center(); 
+              child.material = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+            }
+          });
+          console.log(modeloCaminho)
+          scene.add(model);
+        },
+        undefined,
+        (error) => console.error("Erro ao carregar modelo:", error)
+      );
+  }catch(error){
+      console.error("Erro ao buscar o modelo da API",error)
+      
+  }
+}
 
+carregarModelo("Cachorro", "ossea")
 
 function animate() {
   requestAnimationFrame(animate);
@@ -63,3 +83,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+

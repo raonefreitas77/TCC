@@ -2,7 +2,7 @@
     "Cachorro": {
         "camadas": {
             "derme": "",
-            "ossea": "",
+            "ossea": "../public/base(1).glb",
             "muscular": "",
             "orgaos": ""
         },
