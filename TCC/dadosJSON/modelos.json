@@ -1,0 +1,23 @@
+{
+    "Cachorro": {
+        "camadas": {
+            "derme": "",
+            "ossea": "../public/base(1).glb",
+            "muscular": "",
+            "orgaos": ""
+        },
+        "descricao": "Modelo 3D anatomia de um cachorro",
+        "ultimaAtualizacao": ""
+    },
+    "Sapo": {
+        "camadas": {
+            "derme": "",
+            "ossea": "",
+            "muscular": "",
+            "orgaos": ""
+        },
+        "descricao": "Modelo 3D anatomia de um cachorro",
+        "ultimaAtualizacao": ""
+    }
+
+}
