@@ -1,0 +1,68 @@
+#cena3D {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 83vw;
+    max-width: 83vw;
+    height: 80vw;
+    max-height: calc(100vh - 125px);
+}
+
+
+
+header {
+    position: fixed;
+    width: 82vw;
+    right: 0;
+    top: 0;
+    height: 90px;
+    z-index: 1;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
+#sidebar {
+    border: 2px solid black;
+    border-radius: 20px;
+    width: 15vw;
+    height: 98vh;
+    max-width: 15vw;
+}
+
+#btnOssea, #btnEpiderme, #btnOrgaos, #btnMuscular {
+    border-radius: 8px;
+    padding: 16px; 
+    border: none;
+    display: inline-block;
+}
+
+#botoesHeader {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  
+  #botoesCentro {
+    display: flex;
+    gap: 40px;
+  }
+  
+  #btnHolograma {
+    position: absolute;
+    right: 20px;
+    border-radius: 8px;
+    padding: 16px;
+    border: none;
+    background-color: purple;
+    color: white;
+  }
+  

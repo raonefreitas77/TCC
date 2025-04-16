@@ -1,31 +1,45 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { color } from "three/tsl";
 
+//Ambiente 3D
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 1, 5); // Posição inicial da câmera
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 1, 5); 
 
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(1600,800);
+renderer.domElement.id = 'cena3D';
+
 document.body.appendChild(renderer.domElement);
 
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
+const light = new THREE.DirectionalLight(0xffffff, 1.4);
 light.position.set(5, 10, 7);
 scene.add(light);
-scene.add(new THREE.AmbientLight(0x404040)); // Luz ambiente fraca
+scene.background = new THREE.Color(0xc8c8c8)
+scene.add(new THREE.AmbientLight(0x404040));
 
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // Suaviza a rotação
+controls.enableDamping = true; 
 controls.dampingFactor = 0.05;
 controls.screenSpacePanning = false;
-controls.maxDistance = 10; // Limita o zoom
+controls.maxDistance = 10;
 controls.minDistance = 2;
+
+
+//botões das camadas
+
+const btnOssea = document.getElementById('btnOssea')
+const btnDerme = document.getElementById('btnDerme')
+
+
+//Carregar o modelo 3D
 
 async function carregarModelo(animal, camada){
   try{
@@ -68,7 +82,12 @@ async function carregarModelo(animal, camada){
   }
 }
 
-carregarModelo("Cachorro", "ossea")
+
+// carregar o Modelo no ambiente 3D
+
+btnOssea.onclick = function(){
+    carregarModelo("Cachorro", "ossea")
+}
 
 function animate() {
   requestAnimationFrame(animate);
