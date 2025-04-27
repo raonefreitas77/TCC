@@ -37,6 +37,7 @@ controls.minDistance = 2;
 
 const btnOssea = document.getElementById('btnOssea')
 const btnDerme = document.getElementById('btnDerme')
+const escolherAnimal = document.getElementById('previewAnimal')
 
 
 //Carregar o modelo 3D
