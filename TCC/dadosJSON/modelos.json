@@ -1,8 +1,8 @@
 {
     "Cachorro": {
         "camadas": {
-            "derme": "",
-            "ossea": "../public/assets/cachorroOssea.glb",
+            "epiderme": "",
+            "ossea": "/assets/cachorroOssea.glb",
             "muscular": "",
             "orgaos": ""
         },
@@ -11,7 +11,7 @@
     },
     "Sapo": {
         "camadas": {
-            "derme": "",
+            "epiderme": "",
             "ossea": "",
             "muscular": "",
             "orgaos": ""
