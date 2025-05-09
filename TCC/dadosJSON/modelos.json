@@ -1,10 +1,10 @@
 {
     "Cachorro": {
         "camadas": {
-            "epiderme": "",
-            "ossea": "/assets/cachorroOssea.glb",
-            "muscular": "",
-            "orgaos": ""
+            "epiderme": "/assets/cachorroEpiderme.glb",
+            "ossea": "/assets/ossos_0509212801_texture.glb",
+            "muscular": "/assets/cachorroMusculatura.glb",
+            "orgaos": "/assets/cachorroOrgaos.glb"
         },
         "descricao": "Modelo 3D anatomia de um cachorro",
         "ultimaAtualizacao": ""

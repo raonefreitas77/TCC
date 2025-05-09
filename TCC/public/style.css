@@ -1,7 +1,6 @@
-
 html, body {
     overflow: hidden;
-    background-color: #f7f7f7;
+    background-color: #e6f4dc;
     font-family: 'Inter', sans-serif;
 }
 
@@ -24,7 +23,7 @@ header {
     right: 0;
     top: 0;
     height: 50px;
-    background-color: #ffffff;
+    background-color: #d1ecc4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +45,7 @@ header img{
     width: 15vw;
     height: calc(100vh - 50px);
     max-width: 16vw;
-    background-color: #f7f7f7;
+    background-color: #d1ecc4;
     box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
     border-right: none;
 
@@ -66,13 +65,15 @@ header img{
 /* estilizando botões */
 
 #btnOssea, #btnEpiderme, #btnOrgaos, #btnMuscular {
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 16px; 
+    min-width: 120px;
+    white-space: nowrap;
     border: none;
     display: inline-block;
     cursor: pointer;
+    background-color: #f6f9f2;
 }
-
 
 #botoesHeader {
     position: relative;
@@ -107,7 +108,7 @@ header img{
     width: 150px;
     padding: 0 5px;
     border: none;
-    background-color: purple;
+    background-color: #93502A;
     color: white;
     cursor: pointer;
 }
@@ -118,5 +119,3 @@ header img{
   background: transparent; 
   cursor: pointer;
 }
-
-  

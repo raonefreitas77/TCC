@@ -17,7 +17,7 @@ renderer.domElement.id = 'cena3D'
 
 document.body.appendChild(renderer.domElement)
 
-scene.background = new THREE.Color(0xc8c8c8)
+scene.background = new THREE.Color(0xe6f4dc)
 scene.add(new THREE.AmbientLight(0x404040, 1))
 
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.8)

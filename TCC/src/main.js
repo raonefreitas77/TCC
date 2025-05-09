@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { color } from "three/tsl";
 import {scene, camera, renderer} from "./scene.js";
 
 
 //Carregar o modelo 3D
+let modeloAtual = null
+
 
 async function carregarModelo(animal, camada){
   try{
@@ -22,6 +22,19 @@ async function carregarModelo(animal, camada){
         console.error("Caminho do modelo não encontrado")
         return
       }
+
+      if (modeloAtual) {
+        scene.remove(modeloAtual)
+        modeloAtual.traverse((child) => {
+          if (child.isMesh) {
+            child.geometry.dispose()
+            if (child.material.map) child.material.map.dispose()
+            child.material.dispose()
+          }
+        })
+        modeloAtual = null
+      }
+
       const gltfLoader = new GLTFLoader()
       gltfLoader.load(
         modeloCaminho, 
@@ -33,11 +46,14 @@ async function carregarModelo(animal, camada){
           model.traverse((child) => {
             if (child.isMesh) {
               child.geometry.center()
-              child.material = new THREE.MeshStandardMaterial({ color: 0xaaaaaa })
+              if(camada==="ossea"){
+                child.material = new THREE.MeshStandardMaterial({ color: 0xaaaaaa })
+              }
             }
           })
           console.log(modeloCaminho)
           scene.add(model)
+          modeloAtual = model
         },
         undefined,
         (error) => console.error("Erro ao carregar modelo:", error)
@@ -66,3 +82,26 @@ document.getElementById('btnOssea').addEventListener("click", () => {
     carregarModelo(animalSelecionado, "ossea")
 })
 
+document.getElementById('btnEpiderme').addEventListener("click", () => {
+  if(!animalSelecionado){
+      alert("Selecione um animal")
+      return
+  }
+  carregarModelo(animalSelecionado, "epiderme")
+})
+
+document.getElementById('btnOrgaos').addEventListener("click", () => {
+  if(!animalSelecionado){
+      alert("Selecione um animal")
+      return
+  }
+  carregarModelo(animalSelecionado, "orgaos")
+})
+
+document.getElementById('btnMuscular').addEventListener("click", () => {
+  if(!animalSelecionado){
+      alert("Selecione um animal")
+      return
+  }
+  carregarModelo(animalSelecionado, "muscular")
+})
