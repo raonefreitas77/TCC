@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Anatomy 3D</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <header> 
+        <img id="home" src="../public/assets/home.png">
+        <div id="botoesHeader">
+            <button id="btnHolograma">Criar Holograma</button>
+        </div>          
+    </header>
+
+    <div id="botoesCamadas">
+        <button id="btnEpiderme">Epiderme</button>
+        <button id="btnOssea">Camada óssea</button>
+        <button id="btnOrgaos">Órgãos</button>
+        <button id="btnMuscular">Musculatura</button>
+    </div>
+
+    <div id="botoesPersonalizar">
+        <button id="btnSexoM">Macho</button>
+        <button id="btnSexoF">Fêmea</button>
+    </div>
+
+    <div class="slider-container">
+        <label for="sliderOssos">Alterar transparência</label>
+        <input type="range" id="sliderOssos" max="1" min="0" step="0.01" value="1">
+    </div>
+
+
+    <div id="sidebar">
+        <h1>Animais</h1>
+        <h2>Mamíferos</h2>
+        <div class="preview-animais" id="previewAnimal" alt="cachorro">
+            <img src="/assets/images-removebg-preview.png">
+        </div>
+    </div>
+
+    <div id="cardbar" class="cardbar">
+        <p id="nomeEstrutura"> Modelo aqui(Coração)</p>
+        <canvas id="previewCanvas"></canvas>
+        <p id="infoEstrutura"> texto aqui </p>
+    </div>
+
+  
+    <button id="toggleBtn" class="toggle-btn">❮</button>
+
+    <script type="module" src="./src/scene.js"></script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>
