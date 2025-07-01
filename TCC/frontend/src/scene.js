@@ -108,6 +108,7 @@ controls.minDistance = 2
 
 
 
+
 function renderPreview(objetoOriginal) {
     const canvas = document.getElementById('previewCanvas')
 
@@ -177,6 +178,7 @@ window.addEventListener("resize", () => {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
 
 
 function animate() {

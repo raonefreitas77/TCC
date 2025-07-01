@@ -180,7 +180,7 @@ header img{
 
 #nomeEstrutura {
     font-size: 30px;
-    margin-left: 160px;
+    margin-left: 70px;
     margin-top: 30px;
 }
 
@@ -193,10 +193,11 @@ header img{
 }
 
 
+
 input[type=range] {
     -webkit-appearance: none;
     appearance: none;
-    width: 200px;
+    width: 250px;
     height: 8px;
     background: #c8e6c9;
     border-radius: 5px;
@@ -249,4 +250,17 @@ input[type=range]::-moz-range-thumb:hover {
     gap: 8px;
     font-family: Arial;
     color: #333;
+}
+
+
+#tooltip{
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
 }

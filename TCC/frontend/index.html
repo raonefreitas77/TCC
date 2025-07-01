@@ -24,11 +24,14 @@
     <div id="botoesPersonalizar">
         <button id="btnSexoM">Macho</button>
         <button id="btnSexoF">Fêmea</button>
+        <button id="mapaMarcadores"> Mapa </button>
     </div>
+    
+    <div id="tooltip"></div>
 
     <div class="slider-container">
-        <label for="sliderOssos">Alterar transparência</label>
-        <input type="range" id="sliderOssos" max="1" min="0" step="0.01" value="1">
+        <input type="range" id="sliderFade" min="0" max="1" step="0.001" value="0">
+        <label for="sliderFade">Alterar transparência</label>
     </div>
 
 
@@ -51,5 +54,8 @@
 
     <script type="module" src="./src/scene.js"></script>
     <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/fade.js"></script>
+    <script type="module" src="./src/modelos.js"></script>
+    <script type="module" src="./src/mapaMarcadores.js"></script>
 </body>
 </html>
