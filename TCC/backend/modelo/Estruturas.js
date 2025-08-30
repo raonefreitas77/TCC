@@ -7,13 +7,14 @@ module.exports = class Estruturas {
         this._nomeEstrutura = null
         this._descricao = null
         this._modeloID = new Modelo3D()
+        this._caminho_imagem = null
     }
 
     create = async () => {
-        const SQL = "INSERT INTO estruturas_anatomicas (nomeEstrutura, descricao, modeloID) VALUES (?,?,?)"
+        const SQL = "INSERT INTO estruturas_anatomicas (nomeEstrutura, descricao, modeloID, caminho_imagem) VALUES (?,?,?,?)"
         try {
             const conexao = Banco.getConexao()
-            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao, this.modeloID.idModelo3D])
+            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao, this.modeloID.idModelo3D, this.caminho_imagem])
             this.id = resposta.insertId
             return resposta.affectedRows > 0
         }catch(error){
@@ -35,10 +36,10 @@ module.exports = class Estruturas {
     }
 
     update = async () => {
-        const SQL = "UPDATE estruturas_anatomicas SET nomeEstrutura = ?, descricao = ?, modeloID = ? WHERE idEstrutura = ?"
+        const SQL = "UPDATE estruturas_anatomicas SET nomeEstrutura = ?, descricao = ?, modeloID = ?, caminho_imagem = ? WHERE idEstrutura = ?"
         try {
             const conexao = Banco.getConexao()
-            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao ,this.modeloID.idModelo3D, this.idEstrutura])
+            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao ,this.modeloID.idModelo3D, this.caminho_imagem, this.idEstrutura])
 
             return resposta.affectedRows > 0
         }catch(error){
@@ -134,6 +135,13 @@ module.exports = class Estruturas {
     }
     set modeloID(in_modeloID) {
         this._modeloID = in_modeloID;
+    }
+
+     get caminho_imagem() {
+        return this._caminho_imagem;
+    }
+    set caminho_imagem(in_caminho_imagem) {
+        this._caminho_imagem = in_caminho_imagem;
     }
 
 

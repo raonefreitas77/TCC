@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { removerTodosMarcadores } from './mapaMarcadores.js';
-import { scene } from './scene.js';
+import { scene, controls } from './scene.js';
+import { salvarEstadoInicial, modelosIniciais, cameraPosInicial, cameraRotInicial, camera, controlsTargetInicial } from './scene.js';
+
 
 
 export let modeloAtual = null
@@ -9,6 +11,7 @@ export let modeloOssea = null;
 export let modeloMuscular = null;
 export let modeloOrgaos = null;
 export let modeloEpiderme = null;
+
 
 const sliderFade = document.getElementById("sliderFade");
 
@@ -63,7 +66,11 @@ export async function carregarModelo(animalID, camada) {
         console.log(gltf.scene);
         console.log(gltf.scene.children);
         model.scale.set(2, 2, 2)
-        model.position.set(0, 0, 0)
+        model.updateMatrixWorld(true);     
+        const box = new THREE.Box3().setFromObject(model);
+        const minY = box.min.y;     
+        model.position.y -= minY;
+        model.position.y -= 1.5;
 
         model.traverse((child) => {
           if (child.isMesh) {
@@ -71,6 +78,8 @@ export async function carregarModelo(animalID, camada) {
             child.material.polygonOffset = true;
             child.material.polygonOffsetUnits = -1;
             child.material.needsUpdate = true;
+            child.castShadow = true;
+            child.receiveShadow = true;
             //child.geometry.center()
             if (camada === "ossea") {
               child.material = new THREE.MeshStandardMaterial({
@@ -80,6 +89,8 @@ export async function carregarModelo(animalID, camada) {
             }
           }
         })
+        
+ 
         console.log(modeloCaminho)
         if (camada === "ossea" && modeloOssea) scene.remove(modeloOssea);
         if (camada === "muscular" && modeloMuscular) scene.remove(modeloMuscular);
@@ -87,7 +98,8 @@ export async function carregarModelo(animalID, camada) {
         if (camada === "epiderme" && modeloEpiderme) scene.remove(modeloEpiderme);
 
         scene.add(model)
-
+        
+        console.log(`Modelo da camada ${camada} carregado e camadaAtiva definida.`);
 
         /*if (camada === "ossea") {
             model.traverse(obj => { if (obj.isMesh) obj.renderOrder = 1; });
@@ -106,6 +118,8 @@ export async function carregarModelo(animalID, camada) {
         if (camada === "muscular") modeloMuscular = model;
         if (camada === "orgaos") modeloOrgaos = model;
         if (camada === "epiderme") modeloEpiderme = model;
+        
+        setCamadaAtiva(camada);
 
         requestAnimationFrame(() => {
           sliderFade.dispatchEvent(new Event("input"));
@@ -115,7 +129,8 @@ export async function carregarModelo(animalID, camada) {
         gltf.scene.traverse(obj => {
           console.log(`${obj.name} | ${obj.type}`);
         });
-
+        
+        salvarEstadoInicial();
       },
       undefined,
       (error) => console.error("Erro ao carregar modelo:", error)
@@ -135,6 +150,8 @@ export function contarModelosCarregados() {
   if (modeloOssea) count++;
   return count;
 }
+
+
 
 
 // carregar o Modelo no ambiente 3D
@@ -158,8 +175,36 @@ export function getCamadaAtiva() {
   return camadaAtiva;
 }
 
+export function getModeloAtualDaCamada() {
+  if (camadaAtiva === 'ossea') return modeloOssea;
+  if (camadaAtiva === 'muscular') return modeloMuscular;
+  if (camadaAtiva === 'orgaos') return modeloOrgaos;
+  if (camadaAtiva === 'epiderme') return modeloEpiderme;
+  return null;
+}
+export function getTodosModelos() {
+  return {
+    ossea: modeloOssea,
+    muscular: modeloMuscular,
+    orgaos: modeloOrgaos,
+    epiderme: modeloEpiderme
+  };
+}
 
 
+document.getElementById('resetView').addEventListener("click", () => {
+  controls.reset()
+
+  const modelos = { modeloOssea, modeloMuscular, modeloOrgaos, modeloEpiderme };
+
+  Object.entries(modelos).forEach(([nome, modelo]) => {
+    const estado = modelosIniciais[nome];
+    if (modelo && estado) {
+      modelo.position.copy(estado.pos);
+      modelo.rotation.copy(estado.rot);
+    }
+  });
+});
 
 export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCamadaAtiva) {
   const botoes = [
@@ -169,8 +214,12 @@ export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCa
     { id: 'btnMuscular', modelo: () => modeloMuscular, setModelo: m => modeloMuscular = m, camada: 'muscular' },
   ];
 
+  const todosBotoes = botoes.map(({ id }) => document.getElementById(id));
+
   botoes.forEach(({ id, modelo, setModelo, camada }) => {
-    document.getElementById(id).addEventListener('click', () => {
+    const btn = document.getElementById(id);
+
+    btn.addEventListener('click', () => {
       const animal = getAnimalSelecionado();
       if (!animal) {
         alert("Selecione um animal");
@@ -183,9 +232,10 @@ export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCa
         scene.remove(modelo());
         setModelo(null);
         removerTodosMarcadores();
+        btn.classList.remove("active");
       } else {
         carregarModelo(idAnimal, camada);
-        setCamadaAtiva(camada);
+        btn.classList.add("active");
       }
     });
   });

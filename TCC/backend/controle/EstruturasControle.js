@@ -7,6 +7,7 @@ module.exports = class EstruturasControle {
         estruturas_anatomicas.nomeEstrutura = request.body.estruturas.nomeEstrutura
         estruturas_anatomicas.descricao = request.body.estruturas.descricao
         estruturas_anatomicas.modeloID = request.body.estruturas.modeloID
+        estruturas_anatomicas.caminho_imagem = request.body.estruturas.caminho_imagem
 
         const objResposta = {
             status: true,
@@ -43,6 +44,8 @@ module.exports = class EstruturasControle {
         estruturas_anatomicas.nomeEstrutura = request.body.estruturas.nomeEstrutura
         estruturas_anatomicas.descricao = request.body.estruturas.descricao
         estruturas_anatomicas.modeloID = request.body.estruturas.modeloID
+        estruturas_anatomicas.caminho_imagem = request.body.estruturas.caminho_imagem
+
 
         const objResposta = {
             status: true,

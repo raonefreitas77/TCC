@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - BioVision</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #0d0d0d;
+    }
+
+    .login-box {
+      background: #1a1a1a;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      width: 300px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #00ff88;
+      border: none;
+      border-radius: 5px;
+      color: black;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-box button:hover {
+      background: #00cc6a;
+    }
+
+    .login-box .register-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .login-box .register-btn:hover {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <input type="text" id="usuario" placeholder="Usuário">
+      <input type="password" id="senha" placeholder="Senha">
+      <button onclick="fazerLogin()">Entrar</button>
+      <button class="register-btn" onclick="registrar()">Registrar</button>
+    </div>
+  </div>
+
+  <script>
+    function fazerLogin() {
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+      const usuarioEncontrado = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+
+      if (usuarioEncontrado) {
+        localStorage.setItem("usuarioLogado", usuario);
+        alert("Login bem-sucedido!");
+        window.location.href = "index.html";
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    }
+
+    function registrar() {
+      const usuario = prompt("Digite o novo nome de usuário:");
+      const senha = prompt("Digite a senha:");
+
+      if (usuario && senha) {
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        if (usuarios.some(u => u.usuario === usuario)) {
+          alert("Usuário já existe!");
+          return;
+        }
+        usuarios.push({ usuario, senha });
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        alert("Usuário registrado com sucesso!");
+      }
+    }
+  </script>
+</body>
+</html>
