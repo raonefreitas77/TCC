@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel de Administrador - BioVision</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #ddd;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff88;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00ff88;
+    }
+
+    .card {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+    }
+
+    button {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .aprovar {
+      background: #00ff88;
+      color: black;
+    }
+
+    .aprovar:hover {
+      background: #00cc6a;
+    }
+
+    .reprovar {
+      background: #ff4d4d;
+      color: white;
+    }
+
+    .reprovar:hover {
+      background: #cc0000;
+    }
+
+    #usuariosPendentes div,
+    #usuariosAtivos div {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #00ff8833;
+    }
+
+    .home-btn {
+      display: block;
+      width: 180px;
+      margin: 20px auto 0 auto;
+      padding: 10px;
+      text-align: center;
+      background: #00ff88;
+      color: black;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      box-shadow: 0 0 10px #00ff88;
+    }
+
+    .home-btn:hover {
+      background: #00cc6a;
+    }
+
+    h2 {
+      color: #00ff88;
+      text-align: center;
+      text-shadow: 0 0 5px #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem("isAdmin") !== "true") {
+      alert("Acesso negado! Apenas administradores podem entrar.");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <h1>Painel de Administrador - BioVision</h1>
+
+  <div class="card" id="usuariosPendentes"></div>
+  <div class="card" id="usuariosAtivos"></div>
+
+  <a href="index.html" class="home-btn">Voltar para Home</a>
+
+  <script>
+    const API_URL = "http://localhost:3000/api";
+
+    async function carregarUsuarios() {
+      try {
+        const res = await fetch(`${API_URL}/usuarios`);
+        const usuarios = await res.json();
+
+        const pendentes = usuarios.filter(u => u.status === "pendente");
+        const ativos = usuarios.filter(u => u.status === "ativo");
+
+        // ------------------ Pendentes ------------------
+        const divPendentes = document.getElementById("usuariosPendentes");
+        divPendentes.innerHTML = "<h2>Usuários Pendentes</h2>";
+
+        if (pendentes.length === 0) {
+          divPendentes.innerHTML += "<p style='text-align:center;'>Nenhum usuário pendente.</p>";
+        } else {
+          pendentes.forEach(u => {
+            const bloco = document.createElement("div");
+            bloco.innerHTML = `
+              <strong>${u.usuario}</strong>
+              <div style="margin-top:8px;">
+                <button class="aprovar" onclick="aprovarUsuario('${u.usuario}')">Aprovar</button>
+                <button class="reprovar" onclick="reprovarUsuario('${u.usuario}')">Reprovar</button>
+              </div>
+            `;
+            divPendentes.appendChild(bloco);
+          });
+        }
+
+        // ------------------ Ativos ------------------
+        const divAtivos = document.getElementById("usuariosAtivos");
+        divAtivos.innerHTML = "<h2>Usuários Aprovados</h2>";
+
+        if (ativos.length === 0) {
+          divAtivos.innerHTML += "<p style='text-align:center;'>Nenhum usuário aprovado ainda.</p>";
+        } else {
+          ativos.forEach(u => {
+            const bloco = document.createElement("div");
+            bloco.innerHTML = `<strong>${u.usuario}</strong>`;
+            divAtivos.appendChild(bloco);
+          });
+        }
+      } catch (err) {
+        alert("Erro ao carregar usuários do servidor!");
+        console.error(err);
+      }
+    }
+
+    async function aprovarUsuario(usuario) {
+      try {
+        const res = await fetch(`${API_URL}/aprovar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert("Usuário aprovado!");
+          carregarUsuarios();
+        }
+      } catch (err) {
+        alert("Erro ao aprovar usuário!");
+        console.error(err);
+      }
+    }
+
+    async function reprovarUsuario(usuario) {
+      try {
+        const res = await fetch(`${API_URL}/reprovar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert("Usuário removido!");
+          carregarUsuarios();
+        }
+      } catch (err) {
+        alert("Erro ao remover usuário!");
+        console.error(err);
+      }
+    }
+
+    carregarUsuarios();
+  </script>
+</body>
+</html>

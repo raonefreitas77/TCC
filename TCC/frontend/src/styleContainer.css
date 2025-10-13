@@ -1,0 +1,149 @@
+#controleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px 100px;
+    padding: 20px;
+    background-color: rgb(201, 230, 213);
+    border-radius: 12px;
+    position: fixed;
+    bottom: 40px;
+    left: 22%;
+    min-height: 45px;
+    width: 55vw;
+}
+
+#btnSexoM:hover, #btnSexoF:hover, #mapaMarcadores:hover, #lockControls:hover, #resetView:hover {
+    background-color: #059669; /* Verde suave */
+    color: #ffffff; 
+}
+
+#btnSexoM, #btnSexoF {
+    background-color: rgb(119, 233, 180);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    left: 15%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#btnSexoM, #btnSexoF button.active {
+    background: #059669;
+    color: white;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25);
+}
+
+#mapaMarcadores, #lockControls, #resetView {
+    background-color: rgb(119, 233, 180);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    left: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#botoesConfigs {
+    /*
+    position: fixed;
+    top: 81%;
+    left: 65%;
+    padding-top: 75px;
+    gap: 40px;
+    z-index: 2;
+    */
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+
+#botoesConfigs button.active {
+    background: #059669;
+    color: white;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25);
+}
+
+
+#botoesPersonalizar {
+    /*
+    position: fixed;
+    top: 81.5%;
+    left: 25%;
+    padding-top: 75px;
+    gap: 40px;
+    z-index: 2;
+    */ 
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+  
+
+#botoesCamadas {
+    position: fixed;
+    top: 2.5%;
+    left: 45%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+    box-sizing: border-box;
+    gap: 40px;
+    z-index: 2;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 250px;
+    height: 8px;
+    background: #a1b8a1;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #086e53;
+    cursor: pointer;
+    box-shadow: 0 0 2px #333;
+    transition: background 0.3s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    background: #086e53;
+}
+
+input[type=range]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #086e53;
+    cursor: pointer;
+    box-shadow: 0 0 2px #333;
+    transition: background 0.3s;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    background: #086e53;
+}
+
+.slider-container {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: Arial;
+    color: #333;
+}

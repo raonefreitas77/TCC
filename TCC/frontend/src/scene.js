@@ -7,7 +7,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
-import { modeloOssea, modeloMuscular, modeloOrgaos, modeloEpiderme } from './modelos.js';
+import { modeloOssea, modeloMuscular, modeloOrgaos, modeloEpiderme } from './loader.js';
 //Ambiente 3D
 
 
@@ -16,6 +16,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
+
+document.getElementById("cena3D").appendChild(renderer.domElement);
 
 
 function redimensionarCena() {
@@ -64,7 +66,7 @@ const shadowPlane = new THREE.Mesh(
     new THREE.ShadowMaterial({ opacity: 0.3 }) // sombra suave e sem cor
 );
 shadowPlane.rotation.x = -Math.PI / 2;
-shadowPlane.position.y = -1.5; // abaixo do modelo
+shadowPlane.position.y = -1;
 shadowPlane.receiveShadow = true;
 scene.add(shadowPlane);
 
@@ -75,14 +77,13 @@ canvas.width = 2048; // Alta resolução
 canvas.height = 2048;
 const ctx = canvas.getContext('2d');
 
-function drawGradient(hueShift = 0) {
+function drawGradient() {
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, `hsl(${10 + hueShift}, 5%, 40%)`); 
-    gradient.addColorStop(1, `hsl(${20 + hueShift}, 5%, 30%)`); 
+    gradient.addColorStop(0, `hsl(145, 30%, 38%)`); // verde natural
+    gradient.addColorStop(1, `hsl(140, 38%, 20%)`);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
-
 drawGradient();
 
 const texture = new THREE.CanvasTexture(canvas);
@@ -199,9 +200,7 @@ function renderPreview(objetoOriginal) {
     animate();
 }
 
-//function verEstrutura(estrutura){
 
-//}
 
 
 window.addEventListener("resize", () => {
@@ -220,4 +219,4 @@ function animate() {
 
 animate();
 
-export {scene, camera, renderer, controls}
+export {scene, camera, renderer, controls, shadowPlane}

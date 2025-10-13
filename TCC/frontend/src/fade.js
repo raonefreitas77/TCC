@@ -1,5 +1,4 @@
-import { modeloEpiderme, modeloMuscular, modeloOrgaos, modeloOssea, contarModelosCarregados } from './modelos.js';
-import { camadaAtiva } from './modelos.js';
+import { modeloEpiderme, modeloMuscular, modeloOrgaos, modeloOssea, contarModelosCarregados } from './loader.js';
 import * as THREE from 'three'
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -27,11 +26,6 @@ function aplicarOpacidade(modelo, opacidade) {
     });
   }
 }
-
-
-
-
-
 
 
 

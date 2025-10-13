@@ -1,14 +1,17 @@
+/*sidebar*/
 #sidebar {
     position: fixed;
     top: 80px;
     left: 0;
     width: 10vw;
-    height: calc(90vh - 30px);
     max-width: 16vw;
+    height: calc(90vh - 30px);
     background-color: rgb(201, 230, 213);
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     border-right: 1px solid var(--border);
+    box-sizing: border-box;
+    padding: 0.1rem;
 }
 
 #sidebar > p:first-child {
@@ -59,21 +62,274 @@
 
 @media (max-width: 1024px) {
     #sidebar {
-        width: 260px;
+        width: 16vw; /* mantém proporcionalidade, sem quebrar layout */
+        max-width: 250px;
+        height: calc(90vh - 30px);
     }
 }
 
+/* mobile */
 @media (max-width: 768px) {
     #sidebar {
-        position: fixed;
-        left: -280px;
-        top: 0;
+        left: -100%; /* sidebar fora da tela */
+        width: 70%; /* mantém proporcionalidade com tela pequena */
         height: 100vh;
-        z-index: 100;
+        top: 0;
         transition: left 0.3s ease;
+        border-radius: 0; /* remove borda arredondada */
+        padding: 1rem;
     }
-    
+
     #sidebar.open {
         left: 0;
     }
+}
+
+
+/*cardbar*/
+
+
+.cardbar {
+    position: fixed;
+    top: 110px;
+    right: -420px; 
+    width: 390px;
+    height: 70vh;
+    background-color: #e2f2ea;
+    box-shadow: -2px 1px 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease;
+    padding: 20px;
+    z-index: 1;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+    
+.cardbar.open {
+    right: 0;
+}
+
+.toggle-btn {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: rgba(5, 150, 105, 0.95);
+    color: white;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 30px;
+    z-index: 1001;
+    transition: right 0.3s ease;
+}
+
+    
+.cardbar.open ~ .toggle-btn {
+    right: 420px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/*#previewEstrutura {
+    display: none;
+}*/
+
+
+#infoResumo {
+    height: 200px;
+    margin-top: 15px;
+    color: #34495e;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: justify;
+    background: linear-gradient(135deg, rgba(226, 242, 234, 0.6), rgba(255, 255, 255, 0.3));
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(62, 180, 137, 0.1);
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#infoResumo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, #3eb489, #45c49a);
+    border-radius: 0 15px 15px 0;
+}
+
+
+.titulo-info {
+    font-size: 12px;
+    font-weight: 700;
+    border-top: 2px solid rgba(62, 180, 137, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--secondary-green);
+    margin-bottom: 12px;
+    margin-top: 33px;
+    display: flex;
+    align-items: center;
+    padding: 20px 0 0 0;
+    gap: 4px;
+}
+
+.titulo-info:first-of-type {
+    margin-top: 0;
+}
+
+.titulo-info::before {
+    content: '';
+    width: 4px;
+    height: 16px;
+    background: linear-gradient(180deg, var(--secondary-green), var(--light-green));
+    border-radius: 2px;
+}
+
+#infoEstrutura {
+    color: #34495e;
+    margin-top: 15px;
+    max-height: 1000px;
+    margin-bottom: 50px;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: justify;
+    background: linear-gradient(135deg, rgba(226, 242, 234, 0.6), rgba(255, 255, 255, 0.3));
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(62, 180, 137, 0.1);
+    position: relative;
+    overflow-y: auto;
+}
+
+#infoEstrutura::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, #3eb489, #45c49a);
+    border-radius: 0 15px 15px 0;
+}
+
+#nomeEstrutura {
+    font-size: 28px;
+    margin: 0;
+    flex: 1;
+}
+
+#previewCanvas {
+    display: none;
+}
+
+/*#previewCanvas {
+    width: 100%;
+    height: 0px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#imgCardbar {
+    width: 100%;
+    height: 100%;
+}*/
+
+.iconeCamada {
+    width: 50px;
+    height: 48px;
+    background: linear-gradient(135deg, #3eb489, #45c49a);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(62, 180, 137, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: float 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+.iconeCamada::after {
+    content: '🦴';
+    font-size: 24px;
+    filter: brightness(0) invert(1);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+}
+
+
+/* Container dos botões de áudio (em cima) */
+#botoesLeitura {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#botoesCardbar {
+    display: flex;
+    gap: 10px;
+}
+
+/* Estilos unificados para TODOS os botões */
+#lerInfo, #lerInfoResumo, #cameraEstrutura, #voltarCatalogo {
+    background-color: #50ecb8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25);
+    color: white;
+    font-weight: 500;
+    flex: 1;
+    min-height: 40px;
+}
+
+ #cameraEstrutura, #voltarCatalogo {
+    background-color: #50ecb8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25);
+    color: white;
+    font-weight: 500;
+    flex: 1;
+    min-height: 40px;
+}
+
+#cameraEstrutura:hover, #voltarCatalogo:hover, #lerInfo:hover, #lerInfoResumo:hover {
+    background-color: #3ab088;
+}
+
+#cameraEstrutura:active, #voltarCatalogo:active, #lerInfo:active, #lerInfoResumo:active {
+    transform: scale(0.98);
 }

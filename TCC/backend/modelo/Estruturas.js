@@ -7,14 +7,14 @@ module.exports = class Estruturas {
         this._nomeEstrutura = null
         this._descricao = null
         this._modeloID = new Modelo3D()
-        this._caminho_imagem = null
+        this._descricao_resumo = null
     }
 
     create = async () => {
-        const SQL = "INSERT INTO estruturas_anatomicas (nomeEstrutura, descricao, modeloID, caminho_imagem) VALUES (?,?,?,?)"
+        const SQL = "INSERT INTO estruturas_anatomicas (nomeEstrutura, descricao, modeloID, descricao_resumo) VALUES (?,?,?,?)"
         try {
             const conexao = Banco.getConexao()
-            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao, this.modeloID.idModelo3D, this.caminho_imagem])
+            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao, this.modeloID.idModelo3D, this.descricao_resumo])
             this.id = resposta.insertId
             return resposta.affectedRows > 0
         }catch(error){
@@ -36,10 +36,10 @@ module.exports = class Estruturas {
     }
 
     update = async () => {
-        const SQL = "UPDATE estruturas_anatomicas SET nomeEstrutura = ?, descricao = ?, modeloID = ?, caminho_imagem = ? WHERE idEstrutura = ?"
+        const SQL = "UPDATE estruturas_anatomicas SET nomeEstrutura = ?, descricao = ?, modeloID = ?, descricao_resumo = ? WHERE idEstrutura = ?"
         try {
             const conexao = Banco.getConexao()
-            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao ,this.modeloID.idModelo3D, this.caminho_imagem, this.idEstrutura])
+            const [resposta] = await conexao.promise().execute(SQL,[this.nomeEstrutura, this.descricao ,this.modeloID.idModelo3D, this.descricao_resumo, this.idEstrutura])
 
             return resposta.affectedRows > 0
         }catch(error){
@@ -137,11 +137,11 @@ module.exports = class Estruturas {
         this._modeloID = in_modeloID;
     }
 
-     get caminho_imagem() {
-        return this._caminho_imagem;
+     get descricao_resumo() {
+        return this._descricao_resumo;
     }
-    set caminho_imagem(in_caminho_imagem) {
-        this._caminho_imagem = in_caminho_imagem;
+    set descricao_resumo(in_descricao_resumo) {
+        this._descricao_resumo = in_descricao_resumo;
     }
 
 

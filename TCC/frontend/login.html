@@ -1,109 +1,323 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Login - BioVision</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .login-container {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #0d0d0d;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Administrador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .login-box {
-      background: #1a1a1a;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-      width: 300px;
-    }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2d7d6e 0%, #4a9b8a 50%, #2d7d6e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    .login-box h2 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
 
-    .login-box input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-    .login-box button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      background: #00ff88;
-      border: none;
-      border-radius: 5px;
-      color: black;
-      font-size: 16px;
-      cursor: pointer;
-    }
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
 
-    .login-box button:hover {
-      background: #00cc6a;
-    }
+        .subtitle {
+            color: #d1d5db;
+            font-size: 15px;
+        }
 
-    .login-box .register-btn {
-      background: #28a745;
-      color: white;
-    }
+        .form-group {
+            margin-bottom: 25px;
+        }
 
-    .login-box .register-btn:hover {
-      background: #1e7e34;
-    }
-  </style>
+        label {
+            display: block;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            stroke: #9ca3af;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #5dd4b4;
+            box-shadow: 0 0 0 3px rgba(93, 212, 180, 0.2);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fecaca;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4a9b8a 0%, #2d7d6e 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(77, 155, 138, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .info-box p {
+            color: #e9d5ff;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .pending-container {
+            text-align: center;
+        }
+
+        .pending-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(234, 179, 8, 0.2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .pending-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: #fbbf24;
+        }
+
+        .email-info {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 25px 0;
+        }
+
+        .email-info strong {
+            color: #e9d5ff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .email-info span {
+            color: white;
+            font-size: 15px;
+        }
+
+        .note {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-box">
-      <h2>Login</h2>
-      <input type="text" id="usuario" placeholder="Usuário">
-      <input type="password" id="senha" placeholder="Senha">
-      <button onclick="fazerLogin()">Entrar</button>
-      <button class="register-btn" onclick="registrar()">Registrar</button>
+    <!-- Formulário de Registro -->
+    <div class="container" id="formContainer">
+        <div class="header">
+            <h1>Registro de Administrador</h1>
+            <p class="subtitle">Solicite acesso para adicionar modelos anatômicos 3D ao site</p>
+        </div>
+
+        <div class="error" id="errorMsg"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit">Solicitar Acesso</button>
+        </form>
+
+        <div class="info-box">
+            <p><strong>⚠️ Atenção:</strong> Seu registro será analisado por um administrador antes de ser aprovado.</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    function fazerLogin() {
-      const usuario = document.getElementById("usuario").value.trim();
-      const senha = document.getElementById("senha").value.trim();
+    <!-- Tela de Aguardando Autorização -->
+    <div class="container hidden" id="pendingContainer">
+        <div class="pending-container">
+            <div class="pending-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h1>Aguardando Autorização</h1>
+            <p class="subtitle">Seu pedido de registro foi enviado com sucesso. Um administrador irá revisar e aprovar sua conta em breve.</p>
 
-      let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+            <div class="email-info">
+                <strong>Email registrado:</strong>
+                <span id="registeredEmail"></span>
+            </div>
 
-      const usuarioEncontrado = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+            <p class="note">Você receberá um email quando sua conta for aprovada.</p>
+        </div>
+    </div>
 
-      if (usuarioEncontrado) {
-        localStorage.setItem("usuarioLogado", usuario);
-        alert("Login bem-sucedido!");
-        window.location.href = "index.html";
-      } else {
-        alert("Usuário ou senha incorretos.");
-      }
-    }
+    <script>
+        const form = document.getElementById('registerForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const formContainer = document.getElementById('formContainer');
+        const pendingContainer = document.getElementById('pendingContainer');
+        const registeredEmail = document.getElementById('registeredEmail');
 
-    function registrar() {
-      const usuario = prompt("Digite o novo nome de usuário:");
-      const senha = prompt("Digite a senha:");
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-      if (usuario && senha) {
-        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-        if (usuarios.some(u => u.usuario === usuario)) {
-          alert("Usuário já existe!");
-          return;
+            // Limpar erro anterior
+            errorMsg.classList.remove('show');
+
+            // Validações
+            if (!email || !password || !confirmPassword) {
+                showError('Preencha todos os campos');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showError('Digite um email válido');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('As senhas não coincidem');
+                return;
+            }
+
+            // Aqui você faria a chamada para sua API/Backend
+            // fetch('/api/register', { method: 'POST', body: JSON.stringify({ email, password }) })
+            
+            // Simular envio e mostrar tela de aguardo
+            registeredEmail.textContent = email;
+            formContainer.classList.add('hidden');
+            pendingContainer.classList.remove('hidden');
+        });
+
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
         }
-        usuarios.push({ usuario, senha });
-        localStorage.setItem("usuarios", JSON.stringify(usuarios));
-        alert("Usuário registrado com sucesso!");
-      }
-    }
-  </script>
+    </script>
 </body>
 </html>

@@ -2,58 +2,82 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>BioVision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioVision - Anatomia 3D Interativa</title>
   <link rel="stylesheet" href="src/styleHome.css" />
 </head>
 <body>
   <header>
-  <div class="logo">BioVision</div>
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="index.html">Análise 3D</a>
-    <a href="#">Holograma</a>
-    <span id="login-area">
-      <a href="login.html" id="login-link">Login</a>
-    </span>
-  </nav>
-</header>
+    <div class="logo">BioVision</div>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="index.html">Análise 3D</a>
+      <a href="adicionarModelos.html">Adicionar Modelos</a>
+      <span id="login-area">
+        <a href="login.html" id="login-link">Login</a>
+      </span>
+    </nav>
+  </header>
 
-
-  <div class="container">
-    <div class="texto-esquerda">
+  <section class="hero">
+    <div class="hero-content">
       <h1>Análise Biológica</h1>
       <p>
         Explore modelos anatômicos interativos de forma intuitiva! Clique,
         aprenda e mergulhe no mundo da biologia com uma visualização 3D
         inovadora.
       </p>
-
-      <a href="index.html" class="btn-iniciar">Iniciar Agora</a>
+      <a href="index.html" class="btn-iniciar">Iniciar Análise</a>
     </div>
-    <div id="modelo3D"></div>
-  </div>
-
-  <section id="analise">
-    <h2>Análise</h2>
-    <p>
-      Nossa plataforma foi desenvolvida com o objetivo de facilitar o estudo e
-      a compreensão da anatomia canina de forma visual, interativa e
-      acessível.
-    </p>
-    <p>
-      Com isso em mente, criamos este site para estudantes, profissionais e
-      curiosos da área de veterinária e biologia, possibilitando a exploração
-      do corpo do cão em diferentes camadas — epiderme, musculatura e órgãos
-      internos — com a liberdade de visualizar, rotacionar e analisar cada
-      parte do modelo.
-    </p>
-    <p>
-      Nosso intuito é unir tecnologia e educação, proporcionando uma ferramenta
-      de estudo moderna que possa ser utilizada tanto em salas de aula quanto
-      em estudos individuais.
-    </p>
+    <div class="hero-visual">
+      <div id="modelo3D"></div>
+    </div>
   </section>
 
-  <script src="src/home.js"></script>
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Precisão Visual</h3>
+      <p>Modelos 3D detalhados com precisão científica para aprendizado efetivo</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Interatividade Total</h3>
+      <p>Rotacione, amplie e explore cada camada anatômica livremente</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📚</div>
+      <h3>Educação Moderna</h3>
+      <p>Ferramenta ideal para salas de aula e estudos individuais</p>
+    </div>
+  </section>
+
+  <section class="analise-section">
+    <h2>Análise</h2>
+    <div class="analise-content">
+      <p>
+        Nossa plataforma foi desenvolvida com o objetivo de facilitar o estudo e
+        a compreensão da anatomia canina de forma visual, interativa e
+        acessível.
+      </p>
+      <p>
+        Com isso em mente, criamos este site para estudantes, profissionais e
+        curiosos da área de veterinária e biologia, possibilitando a exploração
+        do corpo do cão em diferentes camadas — epiderme, musculatura e órgãos
+        internos — com a liberdade de visualizar, rotacionar e analisar cada
+        parte do modelo.
+      </p>
+      <p>
+        Nosso intuito é unir tecnologia e educação, proporcionando uma ferramenta
+        de estudo moderna que possa ser utilizada tanto em salas de aula quanto
+        em estudos individuais.
+      </p>
+    </div>
+  </section>
+
+
+  
+  <!-- Seu script -->
+  <script type="module" src="src/home.js"></script>
 </body>
 </html>

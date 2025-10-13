@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animal Anatomy 3D</title>
-    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="./src/styleMain.css">
+    <link rel="stylesheet" href="./src/styleContainer.css">
     <link rel="stylesheet" href="./src/styleBars.css">
+    <link rel="stylesheet" href="./src/styleResponse.css">
+    
 </head>
 <body>
     <style>
@@ -21,8 +24,8 @@
 
     <div id="botoesCamadas">
         <button id="btnEpiderme">Epiderme</button>
-        <button id="btnOssea">Camada óssea</button>
-        <button id="btnOrgaos">Órgãos</button>
+        <button id="btnOssea">Esqueleto</button>
+        <button id="btnOrgaos">Órgãos Internos</button>
         <button id="btnMuscular">Musculatura</button>
     </div>
 
@@ -32,16 +35,17 @@
                 <button id="btnSexoF">Fêmea</button>
             </div>
 
+            <div class="slider-container">
+                <input type="range" id="sliderFade" min="0" max="1" step="0.001" value="0">
+                <label for="sliderFade">Alterar transparência</label>
+            </div>
+
             <div id="botoesConfigs">
                 <button id="mapaMarcadores"> Mapa </button>
                 <button id="lockControls">lock</button>
                 <button id="resetView">reset</button>
             </div>
 
-            <div class="slider-container">
-                <input type="range" id="sliderFade" min="0" max="1" step="0.001" value="0">
-                <label for="sliderFade">Alterar transparência</label>
-            </div>
     </div>
     
     <div id="tooltip"></div>
@@ -54,6 +58,9 @@
             <p data-animal="Vaca">Vaca</p>
             <p data-animal="Cavalo">Cavalo</p>
             <p data-animal="Peixe">Peixe</p>
+            <p data-animal="Rato">Rato</p>
+            <p data-animal="Papagaio">Papagaio</p>
+            <p data-animal="Tubarão">Tubarão</p>
         </div>
     </div>
 
@@ -62,20 +69,55 @@
             <div id="nomeEstrutura"></div>
             <div class="iconeCamada"></div>
         </div>
+        <p class="titulo-info"> Descrição resumida</p>
+        <div id="infoResumo"></div>
         <div id="previewEstrutura">
             <canvas id="previewCanvas"></canvas>
-            <img id="imgCardbar">
         </div>
+        <p class="titulo-info">Descrição completa</p>
         <div id="infoEstrutura"></div>
-        <button id="cameraEstrutura">Ver estrutura</button>
-        <button id="voltarCatalogo">← Voltar ao catálogo</button>
+        <div id="botoesCardbar">
+            <button id="cameraEstrutura">Ver estrutura</button>
+            <button id="voltarCatalogo">← Voltar ao catálogo</button>
+        </div>
+        <div id="botoesLeitura"></div>
+            <button id="lerInfo" onclick="toggleLeitura()">🔊 Descrição Completa</button>
+            <button id="lerInfoResumo" onclick="toggleLeituraResumo()">🔊 Descrição resumida</button>
+        </div>
     </div>
 
   
     <button id="toggleBtn" class="toggle-btn">❮</button>
 
+    <div id="cena3D"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script type="module" src="./src/main.js"></script>
+
+
+
+    <div id="janelaHolograma" class="popup">
+        <div class="conteudo">
+            <span id="fecharHolograma">&times;</span>
+            <h2>Como montar o prisma holográfico</h2>
+            <p>Para criar um prisma holográfico simples, siga os passos abaixo:</p>
+            <ol>
+                <li>Recorte 4 trapézios idênticos em plástico transparente (pode usar capa de CD, PET ou acetato).
+                    <ul>
+                        <li>Base maior: 6 cm</li>
+                        <li>Base menor: 1 cm</li>
+                        <li>Altura: 3,5 cm</li>
+                    </ul>
+                </li>
+                <li>Una as 4 peças com fita adesiva transparente, formando uma pequena pirâmide truncada (sem ponta).</li>
+                <li>Coloque o prisma de cabeça para baixo no centro da tela do celular, com o vídeo holográfico tocando.</li>
+                <li>Apague as luzes e observe o holograma flutuante dentro do prisma!</li>
+            </ol>
+            <p style="color:black">Abaixo um tutorial do canal Manual do Mundo de como fazer e usar o prisma holográfico!</p>
+            <iframe src="https://www.youtube.com/embed/ejiDPkVXbqs?si=T7UVtxyP1BhrFNHp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    
     
 </body>
 </html>
