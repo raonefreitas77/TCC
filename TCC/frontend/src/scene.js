@@ -8,7 +8,7 @@ import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
 import { modeloOssea, modeloMuscular, modeloOrgaos, modeloEpiderme } from './loader.js';
-//Ambiente 3D
+
 
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -46,7 +46,7 @@ light.shadow.mapSize.height = 2048;
 light.shadow.bias = 0.0000
 light.shadow.normalBias = 0.02;
 light.shadow.camera.near = 0.1;
-light.shadow.camera.far = 50; // suficiente para cobrir a cena
+light.shadow.camera.far = 50; 
 
 
 
@@ -63,7 +63,7 @@ scene.add(hemiLight, light, light2, bottomLight, bottomLight.target);
 
 const shadowPlane = new THREE.Mesh(
     new THREE.PlaneGeometry(100, 100),
-    new THREE.ShadowMaterial({ opacity: 0.3 }) // sombra suave e sem cor
+    new THREE.ShadowMaterial({ opacity: 0.3 }) 
 );
 shadowPlane.rotation.x = -Math.PI / 2;
 shadowPlane.position.y = -1;
@@ -71,15 +71,15 @@ shadowPlane.receiveShadow = true;
 scene.add(shadowPlane);
 
 
-// Canvas para o gradiente
+
 const canvas = document.createElement('canvas');
-canvas.width = 2048; // Alta resolução
+canvas.width = 2048; 
 canvas.height = 2048;
 const ctx = canvas.getContext('2d');
 
 function drawGradient() {
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, `hsl(145, 30%, 38%)`); // verde natural
+    gradient.addColorStop(0, `hsl(145, 30%, 38%)`); 
     gradient.addColorStop(1, `hsl(140, 38%, 20%)`);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -92,7 +92,7 @@ scene.background = texture;
 
 let hueShift = 0;
 function animateGradient() {
-    hueShift = (hueShift + 1) % 360; // Movimento bem suave
+    hueShift = (hueShift + 1) % 360; 
     drawGradient(hueShift);
     texture.needsUpdate = true;
 }
@@ -103,8 +103,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true
 controls.dampingFactor = 0.05
 controls.screenSpacePanning = false
-controls.maxDistance = 10
-controls.minDistance = 2
+controls.maxDistance = 16
+controls.minDistance = 0.5
 controls.saveState();
 
 
@@ -114,7 +114,7 @@ export let modelosIniciais = {};
 
 export function salvarEstadoInicial() {
   cameraPosInicial = camera.position.clone();
-  controlsTargetInicial = controls.target.clone(); // Mantém só o target
+  controlsTargetInicial = controls.target.clone(); 
 
   modelosIniciais = {};
 
@@ -218,5 +218,9 @@ function animate() {
 }
 
 animate();
+
+setTimeout(() => {
+    document.getElementById('cena3D').classList.add('loaded');
+}, 300);
 
 export {scene, camera, renderer, controls, shadowPlane}

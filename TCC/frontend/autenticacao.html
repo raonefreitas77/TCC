@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Administrador</title>
+  <link rel="stylesheet" href="./src/styleNotificacao.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2d7d6e 0%, #4a9b8a 50%, #2d7d6e 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .header { text-align: center; margin-bottom: 40px; }
+
+    h1 { color: white; font-size: 28px; margin-bottom: 10px; margin-top: 0; }
+
+    .subtitle { color: #d1d5db; font-size: 15px; padding: 5px}
+    
+    .form-group { margin-bottom: 25px; }
+
+    label { display: block; color: #e5e7eb; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+
+    .input-wrapper { position: relative; }
+
+    .input-icon {
+      position: absolute; left: 15px; top: 50%;
+      transform: translateY(-50%);
+      width: 20px; height: 20px; stroke: #9ca3af;
+    }
+
+    input {
+      width: 100%; padding: 14px 14px 14px 45px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px; color: white; font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    input:focus { outline: none; border-color: #5dd4b4; box-shadow: 0 0 0 3px rgba(93, 212, 180, 0.2); }
+
+    input::placeholder { color: #9ca3af; }
+
+    .error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fecaca;
+      padding: 12px; border-radius: 10px; font-size: 14px;
+      margin-bottom: 20px; display: none;
+    }
+
+    .error.show { display: block; }
+
+    button {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #4a9b8a 0%, #2d7d6e 100%);
+      border: none; border-radius: 10px;
+      color: white; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s;
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(77, 155, 138, 0.4); }
+
+    button:active { transform: translateY(0); }
+
+    .email-info {
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 10px; padding: 15px; margin: 25px 0;
+    }
+    .email-info strong { color: #e9d5ff; display: block; margin-bottom: 5px; }
+
+    .email-info span { color: white; font-size: 15px; }
+
+    .hidden { display: none; }
+
+  </style>
+</head>
+<body>
+  <div id="notification-container"></div>
+
+  <div class="container" id="registerContainer">
+    <div class="header">
+      <h1>Autenticação</h1>
+      <p class="subtitle">Crie sua conta e confirme seu e-mail para acessar</p>
+      <p class="subtitle">Já tem uma conta? <a href="/login.html">Entre aqui</a></p>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="email">Nome</label>
+        <div class="input-wrapper">
+          <input type="text" id="nome" placeholder="Nome" required>
+        </div>
+      </div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          <input type="email" id="email" placeholder="seu@email.com" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <div class="input-wrapper">
+          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+      </div>
+
+     
+      <button type="submit">Criar Conta</button>
+    </form>
+  </div>
+
+  <!-- Etapa 2: Confirmação de Código -->
+  <div class="container hidden" id="verifyContainer">
+    <div class="header">
+      <h1>Verifique seu Email</h1>
+      <p class="subtitle">Enviamos um código de confirmação para:</p>
+    </div>
+
+    <div class="email-info">
+      <strong>Email registrado:</strong>
+      <span id="registeredEmail"></span>
+    </div>
+
+    <div class="error" id="verifyError"></div>
+
+    <form id="verifyForm">
+      <div class="form-group">
+        <label for="verificationCode">Código de Verificação</label>
+        <div class="input-wrapper">
+          <input type="text" id="verificationCode" placeholder="Digite o código recebido" required>
+        </div>
+      </div>
+
+      <button type="submit">Confirmar Email</button>
+    </form>
+  </div>
+
+  <script type="module" src="./src/autenticacao.js"></script>
+</body>
+</html>

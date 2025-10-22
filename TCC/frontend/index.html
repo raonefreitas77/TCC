@@ -8,12 +8,23 @@
     <link rel="stylesheet" href="./src/styleContainer.css">
     <link rel="stylesheet" href="./src/styleBars.css">
     <link rel="stylesheet" href="./src/styleResponse.css">
+    <link rel="stylesheet" href="./src/styleNotificacao.css">
     
 </head>
 <body>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap');
+    #cena3D {
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+    }
+    #cena3D.loaded {
+        opacity: 1;
+    }
     </style>
+
+    <div id="notification-container"></div>
+
     <header> 
         <img id="home" src="../public/assets/home.png">
         <h1>Bio Vision</h1>

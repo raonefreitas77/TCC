@@ -5,10 +5,12 @@ import './mapaMarcadores.js';
 import './fade.js'
 import { configurarBotoesCamadas, getAnimalSelecionado, setCamadaAtiva, getCamadaAtiva, definirAnimalSelecionado, } from './loader.js';
 import { atualizarCardbar, cameraEstrutura, estruturasOsseas } from './mapaMarcadores.js';
+import { showNotification } from './notificacao.js';
+import { getModeloAtualDaCamada } from './loader.js';
+import { getEstruturaAtual } from './mapaMarcadores.js';
+import { modeloIDPorAnimalECamada } from './estruturas.js'
 
 
-
-// carregar o Modelo no ambiente 3D
 
 document.getElementById('home').addEventListener('click', () => {
   window.location.href = 'home.html';
@@ -33,14 +35,10 @@ const botoesAnimais = document.querySelectorAll("#escolherAnimal p");
 botoesAnimais.forEach(botao => {
   botao.addEventListener("click", () => {
     const animal = botao.dataset.animal;
-
-    // define no sistema qual animal foi selecionado (carregamento do modelo 3D)
     definirAnimalSelecionado(animal);
-
-    // remove active de todos
     botoesAnimais.forEach(el => el.classList.remove("active"));
-    // adiciona active no clicado
     botao.classList.add("active");
+    carregarEstruturasIniciais();
   });
 });
 
@@ -69,34 +67,18 @@ toggleBtn.addEventListener('click', () => {
 
 async function carregarEstruturasIniciais() {
   try {
-    const response = await fetch("/estruturas");
-    const data = await response.json();
-    const estruturas = data.dados;
-
-    // BUSCAR OS MODELOS TAMBÉM
-    const responseModelos = await fetch("/modelo3d"); // ou a rota que retorna os modelos
-    const dataModelos = await responseModelos.json();
-    const modelos = dataModelos.dados;
-
-    // CRIAR UM MAPA DE modeloID -> camada
-    const mapaCamadas = {};
-    modelos.forEach(modelo => {
-      mapaCamadas[modelo.idModelo3D] = modelo.camada;
-    });
-
-    console.log("Mapa de camadas:", mapaCamadas);
-
     const header = document.querySelector(".card-header");
     const preview = document.getElementById("previewEstrutura");
     const btnVoltar = document.getElementById("voltarCatalogo");
     const btnCamera = document.getElementById("cameraEstrutura");
     const btnOuvir = document.getElementById("lerInfo");
     const btnOuvirResumo = document.getElementById("lerInfoResumo");
-    const infoResumo = document.getElementById("infoResumo");
     const info = document.getElementById("infoEstrutura");
+    const infoResumo = document.getElementById("infoResumo");
+    
     const p = document.querySelectorAll(".titulo-info");
 
-    // Esconde detalhes
+    
     header.style.display = "none";
     preview.style.display = "none";
     btnCamera.style.display = "none";
@@ -108,10 +90,45 @@ async function carregarEstruturasIniciais() {
       p.style.display = "none";
     });
 
-    // Mostra catálogo ORGANIZADO POR CAMADA
+    const nomeAnimal = getAnimalSelecionado();
+    if (!nomeAnimal) {
+      info.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px;">
+          <h3 style="color: #f50b26ff; margin-bottom: 15px;">Nenhum animal selecionado</h3>
+          <p style="color: #6b7280; font-size: 16px;">
+            Por favor, escolha um animal na barra lateral para visualizar as estruturas disponíveis.
+          </p>
+        </div>
+      `;
+      return;
+    }
+    
+    const animalID = mapaAnimais[nomeAnimal];
+    if (!animalID) {
+      console.warn("animal não mapeado:", nomeAnimal);
+      return;
+    }
+
+    const response = await fetch(`/estruturas/animal/${animalID}`);
+    const data = await response.json();
+    const estruturas = data.dados;
+
+    
+    const responseModelos = await fetch("/modelo3d"); // ou a rota que retorna os modelos
+    const dataModelos = await responseModelos.json();
+    const modelos = dataModelos.dados;
+
+    
+    const mapaCamadas = {};
+    modelos.forEach(modelo => {
+      mapaCamadas[modelo.idModelo3D] = modelo.camada;
+    });
+
+    console.log("Mapa de camadas:", mapaCamadas);
+
+
     info.innerHTML = "<h3>Estruturas disponíveis:</h3>";
 
-    // Agrupar estruturas por camada USANDO O MAPA
     const estruturasPorCamada = {};
 
     estruturas.forEach(est => {
@@ -124,18 +141,17 @@ async function carregarEstruturasIniciais() {
 
     console.log("Estruturas agrupadas:", estruturasPorCamada);
 
-    // Definir ordem e nomes amigáveis das camadas
+    
     const configuracaoCamadas = [
       { valor: "ossea", nome: "🦴 Estruturas Ósseas" },
-      { valor: "muscular", nome: "💪 Estruturas Musculares" },
       { valor: "orgaos", nome: "🫀 Órgãos Internos" },
-      { valor: "epiderme", nome: "🧬 Sistema Tegumentar" }
+      { valor: "muscular", nome: "💪 Estruturas Musculares" },
     ];
 
-    // Criar seções para cada camada
+    
     configuracaoCamadas.forEach(config => {
       if (estruturasPorCamada[config.valor] && estruturasPorCamada[config.valor].length > 0) {
-        // Criar subtítulo da camada
+        
         const subtitulo = document.createElement("h4");
         subtitulo.textContent = config.nome;
         subtitulo.style.marginTop = "20px";
@@ -146,7 +162,7 @@ async function carregarEstruturasIniciais() {
         subtitulo.style.paddingBottom = "5px";
         info.appendChild(subtitulo);
 
-        // Criar lista para essa camada
+        
         const lista = document.createElement("ul");
         lista.style.marginTop = "10px";
         lista.style.marginLeft = "20px";
@@ -158,7 +174,7 @@ async function carregarEstruturasIniciais() {
           item.style.padding = "5px";
           item.style.transition = "background-color 0.2s";
 
-          // Efeito hover
+          
           item.addEventListener("mouseenter", () => {
             item.style.backgroundColor = "#e8f4f8";
           });
@@ -188,8 +204,6 @@ function mostrarDetalhesEstrutura(estrutura) {
   const preview = document.getElementById("previewEstrutura");
   const btnVoltar = document.getElementById("voltarCatalogo");
   const btnCamera = document.getElementById("cameraEstrutura");
-  const btnOuvir = document.getElementById("lerInfo");
-  const btnOuvirResumo = document.getElementById("lerInfoResumo");
   const infoResumo = document.getElementById("infoResumo");
   const p = document.querySelectorAll(".titulo-info");
 
@@ -199,71 +213,59 @@ function mostrarDetalhesEstrutura(estrutura) {
   preview.style.display = "block";
   btnCamera.style.display = "inline-block";
   btnVoltar.style.display = "inline-block";
-  btnOuvir.style.display = "inline-block";
-  btnOuvirResumo.style.display = "inline-block";
   infoResumo.style.display = "block";
-  p.forEach(p => {
-      p.style.display = "flex";
-    });
+  p.forEach(p => p.style.display = "flex");
 
-  // Busca a posição pelo nome se não vier no objeto
   let pos = estrutura.position;
   if (!pos && estrutura.nomeEstrutura) {
     const achada = estruturasOsseas.find(e => e.nome.toLowerCase() === estrutura.nomeEstrutura.toLowerCase());
     if (achada) pos = achada.position;
   }
-  // Remove event listener antigo para evitar duplicidade
+
   const novoBtnCamera = btnCamera.cloneNode(true);
   btnCamera.parentNode.replaceChild(novoBtnCamera, btnCamera);
+
   novoBtnCamera.addEventListener("click", () => {
+    const camadaAtiva = getCamadaAtiva();
+    const animalAtual = getAnimalSelecionado();
+
+    if (!camadaAtiva || !animalAtual) {
+      showNotification("warning", "Carregue um modelo antes de visualizar a estrutura.");
+      return;
+    }
+
+    const modeloAtivo = modeloIDPorAnimalECamada[animalAtual]?.[camadaAtiva];
+    const modeloDaEstrutura = estrutura.modeloID;
+
+    if (modeloAtivo !== modeloDaEstrutura) {
+      showNotification(
+        "erro",
+        `O modelo ativo (${camadaAtiva}) não corresponde à camada da estrutura selecionada.`
+      );
+      return;
+    }
+
     cameraEstrutura(pos);
   });
-
 }
 
 
-// Botão voltar
+
 document.getElementById("voltarCatalogo").addEventListener("click", carregarEstruturasIniciais);
 
-// Inicializa
+
 document.addEventListener("DOMContentLoaded", carregarEstruturasIniciais);
 
 const botoesConfigs = document.querySelectorAll("#botoesConfigs button");
 
 botoesConfigs.forEach(botao => {
+  if (botao.id === "mapaMarcadores" || botao.id === "resetView") return; 
+
   botao.addEventListener("click", () => {
     botao.classList.toggle("active");
-  })
-})
+  });
+});
 
-
-let lendo = false; 
-
-function toggleLeitura() {
-  if (!lendo) {
-    const texto = document.getElementById("infoEstrutura").innerText;
-    const fala = new SpeechSynthesisUtterance(texto);
-    fala.lang = "pt-BR";
-    fala.rate = 1.5;
-    fala.pitch = 2;
-
-    fala.onend = () => { 
-      lendo = false;
-      document.getElementById("lerInfo").innerText = "🔊 Ouvir";
-    };
-
-    speechSynthesis.speak(fala);
-
-    lendo = true;
-    document.getElementById("lerInfo").innerText = "⏹️ Parar";
-
-  } else {
-    speechSynthesis.cancel(); 
-    lendo = false;
-    document.getElementById("lerInfo").innerText = "🔊 Ouvir";
-  }
-}
-window.toggleLeitura = toggleLeitura;
 
 const btnHolograma = document.getElementById("btnHolograma");
 const janelaHolograma = document.getElementById("janelaHolograma");

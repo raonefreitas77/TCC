@@ -34,6 +34,10 @@ module.exports = class Modelo3DRouter {
         this._router.delete("/:idModelo3D",
             this.modelo3DControle.Modelo3D_delete_controle
         )
+        this._router.post("/upload",
+            this.modelo3DControle.uploadMiddleware, 
+            this.modelo3DControle.receberModeloPendente
+        )
         return this._router
     }
 

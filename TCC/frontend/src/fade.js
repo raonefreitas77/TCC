@@ -27,12 +27,14 @@ function aplicarOpacidade(modelo, opacidade) {
   }
 }
 
-
+function lerp(a, b, t) {
+  return a + (b - a) * Math.min(Math.max(t, 0), 1);
+}
 
 const sliderFade = document.getElementById("sliderFade");
 
 
-sliderFade.addEventListener("input", () => {
+function calculoOpacidade() {
   const v = parseFloat(sliderFade.value);
   const modelosAtivos = contarModelosCarregados();
 
@@ -94,7 +96,7 @@ sliderFade.addEventListener("input", () => {
     if (v < 0.4) {
       const tA = v / 0.4;
       const fadeA = lerp(opMax, opMin, tA);
-      const fadeB = lerp(opMin, opMax, tA); // B começa a surgir levemente
+      const fadeB = lerp(opMin, opMax, tA); 
 
       if (modelos[0] === 'epiderme') opEpiderme = fadeA;
       if (modelos[0] === 'muscular') opMuscular = fadeA;
@@ -110,7 +112,7 @@ sliderFade.addEventListener("input", () => {
     else if (v < 0.7) {
       const tB = (v - 0.4) / 0.3;
       const fadeB = lerp(opMax, opMin, tB);
-      const fadeC = lerp(0, opMax * 0.7, tB); // C entra mais sutil
+      const fadeC = lerp(0, opMax * 0.7, tB); 
 
       if (modelos[1] === 'epiderme') opEpiderme = fadeB;
       if (modelos[1] === 'muscular') opMuscular = fadeB;
@@ -125,7 +127,7 @@ sliderFade.addEventListener("input", () => {
 
     else {
       const tC = (v - 0.7) / 0.3;
-      const fadeC = lerp(opMax * 0.7, opMax, tC); // termina de aparecer suavemente
+      const fadeC = lerp(opMax * 0.7, opMax, tC); 
 
       if (modelos[2] === 'epiderme') opEpiderme = fadeC;
       if (modelos[2] === 'muscular') opMuscular = fadeC;
@@ -150,7 +152,7 @@ sliderFade.addEventListener("input", () => {
     if (v < 0.3) {
       const tA = v / 0.3;
       const fadeA = lerp(opMax, opMin, tA);
-      const fadeB = lerp(opMin, opMax * 0.6, tA); // começa a subir levemente
+      const fadeB = lerp(opMin, opMax * 0.6, tA); 
 
       if (modelos[0] === 'epiderme') opEpiderme = fadeA;
       if (modelos[1] === 'epiderme') opEpiderme = fadeB;
@@ -164,8 +166,8 @@ sliderFade.addEventListener("input", () => {
 
     else if (v < 0.6) {
       const tB = (v - 0.3) / 0.3;
-      const fadeB = lerp(opMax * 0.6, opMin, tB); // B começa a desaparecer
-      const fadeC = lerp(opMin, opMax * 0.7, tB); // C começa a surgir
+      const fadeB = lerp(opMax * 0.6, opMin, tB); 
+      const fadeC = lerp(opMin, opMax * 0.7, tB); 
 
       if (modelos[1] === 'epiderme') opEpiderme = fadeB;
       if (modelos[1] === 'muscular') opMuscular = fadeB;
@@ -195,7 +197,6 @@ sliderFade.addEventListener("input", () => {
     }
 
     else {
-      // Finaliza com opacidade total no último modelo
       if (modelos[3] === 'epiderme') opEpiderme = opMax;
       if (modelos[3] === 'muscular') opMuscular = opMax;
       if (modelos[3] === 'orgaos') opOrgaos = opMax;
@@ -204,15 +205,15 @@ sliderFade.addEventListener("input", () => {
   }
 
 
-  // Aplica as opacidades
   aplicarOpacidade(modeloEpiderme, opEpiderme);
   aplicarOpacidade(modeloMuscular, opMuscular);
   aplicarOpacidade(modeloOrgaos, opOrgaos);
   aplicarOpacidade(modeloOssea, opOsseo);
-});
-
-
-
-function lerp(a, b, t) {
-  return a + (b - a) * Math.min(Math.max(t, 0), 1);
 }
+
+sliderFade.addEventListener("input",calculoOpacidade)
+
+export function atualizarOpacidade(){
+  calculoOpacidade();
+}
+

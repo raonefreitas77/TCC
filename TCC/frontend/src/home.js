@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// Configuração da cena 3D
 const container = document.getElementById('modelo3D');
 
 const scene = new THREE.Scene();
@@ -25,10 +24,10 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setClearColor(0x000000, 0);
 
-// Adiciona o canvas ao container
+
 container.appendChild(renderer.domElement);
 
-// Iluminação
+
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
 
@@ -47,7 +46,7 @@ const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
 fillLight.position.set(-5, -5, -7);
 scene.add(fillLight);
 
-// Controles
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
@@ -60,7 +59,6 @@ controls.enablePan = false;
 controls.enableZoom = false;
 controls.enableRotate = true;
 
-// Função para carregar modelo
 async function carregarModelo3D() {
   try {
     const response = await fetch("/modelo3d");
@@ -77,17 +75,17 @@ async function carregarModelo3D() {
           const model = gltf.scene;
           model.scale.set(2, 2, 2);
           
-          // Centraliza o modelo
+          
           const box = new THREE.Box3().setFromObject(model);
           const center = box.getCenter(new THREE.Vector3());
           const size = box.getSize(new THREE.Vector3());
           
           model.position.sub(center);
           
-          // Ajusta posição vertical - cachorro no chão
+          
           const minY = box.min.y;
           model.position.y -= minY;
-          model.position.y -= 0.2; // Pequeno ajuste para garantir que está no chão
+          model.position.y -= 0.2; 
 
           model.traverse((child) => {
             if (child.isMesh) {
@@ -121,10 +119,10 @@ async function carregarModelo3D() {
   }
 }
 
-// Inicia carregamento
+
 carregarModelo3D();
 
-// Animação
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -132,14 +130,14 @@ function animate() {
 }
 animate();
 
-// Responsividade
+
 window.addEventListener('resize', () => {
   camera.aspect = container.clientWidth / container.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(container.clientWidth, container.clientHeight);
 });
 
-// Smooth scroll for navigation
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
@@ -149,3 +147,40 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+const usuario = localStorage.getItem('usuario');
+const loginArea = document.getElementById('login-area');
+  
+  if (usuario) {
+    const dadosUsuario = JSON.parse(usuario);
+    
+  
+    loginArea.innerHTML = `
+      <span style="color: #4CAF50; font-weight: 500; margin-right: 10px;">
+        Olá, ${dadosUsuario.nome}
+      </span>
+      <a href="#" id="logout-btn" style="color: #ff4444;">Sair</a>
+    `;
+    
+    
+    document.getElementById('logout-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Deseja sair?')) {
+        localStorage.removeItem('usuario');
+        window.location.reload();
+      }
+    });
+    
+    
+    const linkAdicionarModelos = document.querySelector('a[href="adicionarModelos.html"]');
+    if (linkAdicionarModelos) {
+      linkAdicionarModelos.style.display = 'inline';
+    }
+    
+  } else {
+    
+    const linkAdicionarModelos = document.querySelector('a[href="adicionarModelos.html"]');
+    if (linkAdicionarModelos) {
+      linkAdicionarModelos.style.display = 'none';
+    }
+  }

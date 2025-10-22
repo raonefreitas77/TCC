@@ -22,6 +22,10 @@ module.exports = class EstruturasRouter {
         this._router.get("/:idEstrutura",
             this.estruturasControle.estruturas_readById_controle
         )
+        this._router.get("/animal/:animalID",
+            this.estruturasControle.estruturas_readByAnimal_controle
+        );
+
         this._router.put("/:idEstrutura",
             this.estruturasMiddleware.validar_ModeloID,
             this.estruturasMiddleware.validar_descricao,

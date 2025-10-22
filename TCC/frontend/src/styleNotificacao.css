@@ -1,0 +1,189 @@
+/* notification.css */
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px;
+  width: calc(100% - 40px);
+}
+
+.notification {
+  /* Remove a cor fixa vermelha */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+  z-index: 100000;
+}
+
+.notification.removing {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+}
+
+.notification-content {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.notification-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notification-close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+.notification-progress {
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.notification-progress-bar {
+  height: 100%;
+  animation: shrink 4s linear forwards;
+}
+
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* ✅ CORES POR TIPO */
+
+/* ERRO - VERMELHO */
+.notification.erro {
+  background: #dc2626;
+  border: 1px solid #991b1b;
+}
+
+.notification.erro .notification-text,
+.notification.erro .notification-close,
+.notification.erro .notification-icon {
+  color: white;
+}
+
+.notification.erro .notification-progress-bar {
+  background: #f87171;
+}
+
+
+/* SUCESSO - VERDE */
+.notification.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.notification.success .notification-text {
+  color: #166534;
+}
+
+.notification.success .notification-icon {
+  color: #16a34a;
+}
+
+.notification.success .notification-close {
+  color: #16a34a;
+}
+
+.notification.success .notification-progress-bar {
+  background: #10b981;
+}
+
+/* AVISO - AMARELO/LARANJA */
+.notification.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.notification.warning .notification-text {
+  color: #92400e;
+}
+
+.notification.warning .notification-icon {
+  color: #f59e0b;
+}
+
+.notification.warning .notification-close {
+  color: #f59e0b;
+}
+
+.notification.warning .notification-progress-bar {
+  background: #f59e0b;
+}
+
+/* INFO - AZUL */
+.notification.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.notification.info .notification-text {
+  color: #1e40af;
+}
+
+.notification.info .notification-icon {
+  color: #3b82f6;
+}
+
+.notification.info .notification-close {
+  color: #3b82f6;
+}
+
+.notification.info .notification-progress-bar {
+  background: #3b82f6;
+}
+
+

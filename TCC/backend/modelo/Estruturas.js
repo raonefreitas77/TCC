@@ -109,6 +109,25 @@ module.exports = class Estruturas {
         }
     }
 
+    readByAnimal = async () => {
+        const SQL = `
+            SELECT e.*, m.camada
+            FROM estruturas_anatomicas e
+            JOIN modelo3d m ON e.modeloID = m.idModelo3D
+            WHERE m.animalID = ?
+        `;
+        try {
+            const conexao = Banco.getConexao();
+            const [mRespostas] = await conexao.promise().execute(SQL, [this.modeloID]);
+            return mRespostas;
+        } catch (error) {
+            console.error(error);
+            return [];
+        }   
+    }
+
+
+
     get idEstrutura() {
         return this._idEstrutura;
     }

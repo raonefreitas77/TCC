@@ -1,5 +1,6 @@
 const express = require("express")
-const UsuarioRouter = require("./backend/roteador/usuarioRouter")
+const cors = require("cors")
+const UsuarioRouter = require("./backend/roteador/UsuarioRouter")
 const AnimaisRouter = require("./backend/roteador/AnimaisRouter")
 const Modelo3DRouter = require("./backend/roteador/Modelo3DRouter")
 const EstruturasRouter = require("./backend/roteador/EstruturasRouter")
@@ -10,6 +11,7 @@ module.exports = class Servidor {
         this._porta = 8080
         this._app = express()
 
+        this._app.use(cors())
         this._app.use(express.json())
         //this._app.use(express.static('frontend'))
 

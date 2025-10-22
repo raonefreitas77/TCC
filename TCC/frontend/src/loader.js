@@ -3,6 +3,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { removerTodosMarcadores } from './mapaMarcadores.js';
 import { scene, controls, shadowPlane } from './scene.js';
 import { salvarEstadoInicial, modelosIniciais, cameraPosInicial, cameraRotInicial, camera, controlsTargetInicial } from './scene.js';
+import { showNotification } from './notificacao.js';
+import { atualizarOpacidade } from './fade.js';
+import { atualizarEstruturasOrgaosPorSexo } from './mapaMarcadores.js';
 
 export let modeloAtual = null
 export let modeloOssea = null;
@@ -24,7 +27,12 @@ export async function carregarModelo(animalID, camada) {
       console.error("Formato de resposta inválido")
       return
     }
-    const modeloEncontrado = data.dados.find(modelo => modelo.animalID === animalID && modelo.camada === camada)
+    const modeloEncontrado = data.dados.find(modelo => 
+      modelo.animalID === animalID &&
+      modelo.camada === camada &&
+      modelo.sexo === getSexoSelecionado()
+    );
+
     console.log(modeloEncontrado)
 
     if (!modeloEncontrado) {
@@ -122,10 +130,8 @@ const alturaPorAnimal = {
   Tubarão: 0.5
 };
 
-// NOVA FUNÇÃO: Remove todos os modelos da cena
+
 export function removerTodosModelos() {
-  console.log("🗑️ Removendo todos os modelos da cena...");
-  
   if (modeloOssea) {
     scene.remove(modeloOssea);
     modeloOssea = null;
@@ -143,16 +149,12 @@ export function removerTodosModelos() {
     modeloEpiderme = null;
   }
   
-  // Remove marcadores também
   removerTodosMarcadores();
-  
-  // Reseta camada ativa
+
   setCamadaAtiva(null);
   
-  console.log("✅ Todos os modelos removidos");
 }
 
-// NOVA FUNÇÃO: Remove botões ativos das camadas
 export function resetarBotoesCamadas() {
   const botoes = ['btnOssea', 'btnOrgaos', 'btnEpiderme', 'btnMuscular'];
   botoes.forEach(id => {
@@ -177,7 +179,6 @@ let animalSelecionado = null
 export let camadaAtiva = null
 
 export function definirAnimalSelecionado(nome) {
-  // Se está trocando de animal, remove tudo do anterior
   if (animalSelecionado && animalSelecionado !== nome) {
     console.log(`🔄 Trocando de ${animalSelecionado} para ${nome}`);
     removerTodosModelos();
@@ -197,6 +198,16 @@ export function setCamadaAtiva(camada) {
 
 export function getCamadaAtiva() {
   return camadaAtiva;
+}
+
+let sexoSelecionado = 'M';
+
+export function getSexoSelecionado() {
+  return sexoSelecionado;
+}
+
+export function setSexoSelecionado(sexo) {
+  sexoSelecionado = sexo;
 }
 
 export function getModeloAtualDaCamada() {
@@ -230,6 +241,61 @@ document.getElementById('resetView').addEventListener("click", () => {
   });
 });
 
+
+const btnSexoM = document.getElementById("btnSexoM");
+const btnSexoF = document.getElementById("btnSexoF");
+
+function trocarOrgaosPorSexo(sexo) {
+    const camadaAtiva = getCamadaAtiva();
+    const animalAtual = getAnimalSelecionado();
+
+    if (camadaAtiva !== "orgaos") {
+        showNotification("erro", "Ative a camada Órgãos para trocar o sexo.");
+        return;
+    }
+
+    if (!animalAtual) {
+        showNotification("erro", "Selecione um animal antes de trocar o sexo.");
+        return;
+    }
+
+    if (getSexoSelecionado() === sexo) return;
+
+    setSexoSelecionado(sexo);
+
+    const idAnimal = {
+        "Cachorro": 1,
+        "Gato": 2,
+        "Vaca": 3,
+        "Cavalo": 4,
+        "Peixe": 5,
+        "Rato": 6,
+        "Papagaio": 7,
+        "Tubarão": 8
+    }[animalAtual];
+
+    if (modeloOrgaos) {
+        scene.remove(modeloOrgaos);
+        modeloOrgaos = null;
+    }
+
+    carregarModelo(idAnimal, "orgaos")
+}
+
+document.getElementById('btnSexoF').addEventListener('click', () => {
+  trocarOrgaosPorSexo('F');
+  atualizarEstruturasOrgaosPorSexo();
+});
+
+
+document.getElementById('btnSexoM').addEventListener('click', () => {
+  trocarOrgaosPorSexo('M');
+  atualizarEstruturasOrgaosPorSexo();
+});
+
+
+
+
 export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCamadaAtiva) {
   const botoes = [
     { id: 'btnOssea', modelo: () => modeloOssea, setModelo: m => modeloOssea = m, camada: 'ossea' },
@@ -246,7 +312,7 @@ export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCa
     btn.addEventListener('click', () => {
       const animal = getAnimalSelecionado();
       if (!animal) {
-        alert("Selecione um animal");
+        showNotification("erro","Selecione um animal");
         return;
       }
 
@@ -265,6 +331,10 @@ export function configurarBotoesCamadas(mapaAnimais, getAnimalSelecionado, setCa
         } else if (ativos.length === 0) {
           setCamadaAtiva(null);
         }
+
+        requestAnimationFrame(() => {
+          atualizarOpacidade();
+        });
       } else {
         carregarModelo(idAnimal, camada);
         btn.classList.add("active");

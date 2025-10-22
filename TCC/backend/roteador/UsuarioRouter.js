@@ -13,7 +13,7 @@ module.exports = class UsuarioRouter {
         this._router.post("/",
             this.usuarioMiddleware.validar_nome,
             this.usuarioMiddleware.validar_email,
-            this.usuarioMiddleware.validar_email_existente,
+            this.usuarioMiddleware.validar_email_existente, 
             this.usuarioMiddleware.validar_senhaHash,
             this.controleUsuario.usuario_create_controle
         )
@@ -30,11 +30,26 @@ module.exports = class UsuarioRouter {
             this.usuarioMiddleware.validar_email,
             this.usuarioMiddleware.validar_email_existente,
             this.usuarioMiddleware.validar_senhaHash,
+            this.usuarioMiddleware.validar_email_verificado,
             this.controleUsuario.usuario_update_controle
         )
         this._router.delete("/:idUsuario",
             this.controleUsuario.usuario_delete_controle
         )
+
+        this._router.post("/login", 
+        this.controleUsuario.usuario_login_controle
+        )
+
+        this._router.post("/enviar-codigo",
+            this.controleUsuario.enviarCodigoVerificacao
+        )
+
+        this._router.post("/verificar-codigo",
+            this.controleUsuario.verificarCodigo
+        )
+        
+
         return this._router
     }
 

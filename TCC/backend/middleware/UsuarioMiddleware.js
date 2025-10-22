@@ -61,4 +61,24 @@ module.exports = class UsuarioMiddleware {
             next()
         }
     }
+
+    
+
+    validar_email_verificado = async (request, response, next) => {
+        const usuario = new Usuario()
+        usuario.email = request.body.usuario.email
+
+        const emailVerificado = await usuario.isEmailVerificado()
+
+        if (!emailVerificado) {
+            return response.status(403).send({
+                status: false,
+                msg: "E-mail ainda não foi verificado"
+            })
+        }
+
+        next()
+    }
+
+
 }

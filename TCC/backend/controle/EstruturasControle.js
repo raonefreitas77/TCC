@@ -98,5 +98,21 @@ module.exports = class EstruturasControle {
         response.status(200).send(objResposta)
     }
 
+    estruturas_readByAnimal_controle = async (request, response) => {
+        const estruturas_anatomicas = new Estruturas();
+
+        estruturas_anatomicas.modeloID = Number(request.params.animalID);
+
+        const objResposta = {
+            status: true,
+            msg: "Estruturas do animal lidas com sucesso",
+            dados: await estruturas_anatomicas.readByAnimal(),
+        };
+
+        response.status(200).send(objResposta);
+    }
+
+
+
 
 }
