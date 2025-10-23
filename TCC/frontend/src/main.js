@@ -21,7 +21,7 @@ document.getElementById('home').addEventListener('click', () => {
 
 const mapaAnimais = {
   "Cachorro": 1,
-  "Gato": 2,
+  "Sapo": 2,
   "Vaca": 3,
   "Cavalo": 4,
   "Peixe" : 5,

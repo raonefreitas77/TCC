@@ -95,7 +95,7 @@ mapaMarcadores.addEventListener("click", () => {
 function adicionarMarcador(posicao, nome, animal, camada) {
   const esfera = new THREE.Mesh(
     new THREE.SphereGeometry(0.025, 5, 5),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    new THREE.MeshBasicMaterial({ color: 0xffff00 })
   );
   esfera.position.copy(posicao);
   esfera.renderOrder = 1000; 
@@ -141,7 +141,6 @@ export function atualizarEstruturasOrgaosPorSexo() {
   const animal = getAnimalSelecionado();
 
   if (!estruturas || estruturas.length === 0) return;
-  console.log("vascoooooooo",estruturas)
 
   estruturas.forEach(estrutura => {
     adicionarMarcador(estrutura.position, estrutura.nome, animal, 'orgaos');
@@ -187,9 +186,9 @@ async function onClick(event) {
       const camada = getCamadaAtiva();
 
       if (!animal || !camada) return;
-
+      console.log("animal e camada:", animal, camada);
       const modeloID = modeloIDPorAnimalECamada[animal][camada];
-
+      console.log(modeloID)
       const estrutura = data.dados.find(item =>
         item.nomeEstrutura.toLowerCase() === nome.toLowerCase() &&
         item.modeloID === modeloID

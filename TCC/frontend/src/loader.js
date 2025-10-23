@@ -122,6 +122,7 @@ export async function carregarModelo(animalID, camada) {
 
 const alturaPorAnimal = {
   Cachorro: 1.5,
+  Sapo: 1,
   Vaca: 1,
   Cavalo: 1.5,
   Peixe: 0.5,
